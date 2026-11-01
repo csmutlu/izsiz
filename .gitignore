@@ -1,0 +1,24 @@
+node_modules/
+.DS_Store
+
+# build output
+desktop/dist/
+desktop/release/
+*.apk
+*.aab
+
+# expo / native, recreated by `expo prebuild`
+mobile/.expo/
+mobile/android/
+mobile/ios/
+mobile/dist/
+.metro-health-check*
+
+*.log
+.env*.local
+*.jks
+*.keystore
+*.p8
+*.p12
+*.mobileprovision
+dist-release/

@@ -1,0 +1,112 @@
+{
+  "name": "izsiz",
+  "productName": "Izsiz",
+  "version": "1.0.0",
+  "description": "Strips metadata and tracking junk from files and share links, fully offline",
+  "author": "csmutlu",
+  "main": "dist/main.cjs",
+  "private": true,
+  "scripts": {
+    "build": "node build.mjs",
+    "start": "node build.mjs && electron .",
+    "dist:mac": "node build.mjs && electron-builder --mac",
+    "dist:win": "node build.mjs && electron-builder --win"
+  },
+  "devDependencies": {
+    "electron": "^45.2.1",
+    "electron-builder": "^26.18.0",
+    "esbuild": "^0.28.2"
+  },
+  "allowScripts": {
+    "electron@45.2.1": true,
+    "esbuild@0.28.2": true
+  },
+  "build": {
+    "appId": "app.izsiz.desktop",
+    "productName": "Izsiz",
+    "copyright": "Copyright © 2026 csmutlu",
+    "files": [
+      "dist/**",
+      "renderer/**",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "build",
+        "to": ".",
+        "filter": [
+          "tray*.png"
+        ]
+      }
+    ],
+    "directories": {
+      "output": "release"
+    },
+    "mac": {
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "arm64"
+          ]
+        }
+      ],
+      "category": "public.app-category.utilities",
+      "icon": "build/icon.png",
+      "identity": "-",
+      "extendInfo": {
+        "CFBundleDocumentTypes": [
+          {
+            "CFBundleTypeName": "File",
+            "CFBundleTypeRole": "Viewer",
+            "LSHandlerRank": "Alternate",
+            "LSItemContentTypes": [
+              "public.item",
+              "public.folder"
+            ]
+          }
+        ],
+        "NSPasteboardUsageDescription": "Izsiz reads copied links to strip their tracking codes."
+      },
+      "hardenedRuntime": false
+    },
+    "dmg": {
+      "artifactName": "Izsiz-${version}-mac-${arch}.${ext}"
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "build/icon.png"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "include": "build/installer.nsh",
+      "artifactName": "Izsiz-Setup-${version}.${ext}",
+      "shortcutName": "Izsiz",
+      "uninstallDisplayName": "Izsiz"
+    },
+    "portable": {
+      "artifactName": "Izsiz-Portable-${version}.exe"
+    }
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/csmutlu/izsiz",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/csmutlu/izsiz.git"
+  }
+}

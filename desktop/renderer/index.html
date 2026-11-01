@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data: blob:; style-src 'self'; script-src 'self'; connect-src 'none'" />
+  <title>İzsiz</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="top">
+    <div class="brand">
+      <img src="icon.png" alt="" width="34" height="34" />
+      <div>
+        <h1 data-i18n="appName">İzsiz</h1>
+        <p data-i18n="tagline"></p>
+      </div>
+    </div>
+    <nav class="tabs" role="tablist">
+      <button role="tab" data-tab="files" aria-selected="true" data-i18n="tabFiles"></button>
+      <button role="tab" data-tab="links" aria-selected="false" data-i18n="tabLinks"></button>
+      <button role="tab" data-tab="settings" aria-selected="false" data-i18n="tabSettings"></button>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Dosyalar -->
+    <section id="tab-files" class="panel">
+      <div id="drop" class="drop">
+        <div class="drop-inner">
+          <svg viewBox="0 0 24 24" width="40" height="40" aria-hidden="true"><path d="M12 16V4m0 0-4.5 4.5M12 4l4.5 4.5M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <strong data-i18n="dropTitle"></strong>
+          <span class="muted" data-i18n="dropHint"></span>
+          <div class="row">
+            <button id="pick-files" class="btn primary" data-i18n="pickFiles"></button>
+            <button id="pick-folder" class="btn" data-i18n="pickFolder"></button>
+          </div>
+          <div class="chips">
+            <span>JPG</span><span>PNG</span><span>HEIC</span><span>WebP</span><span>GIF</span><span>SVG</span><span>PDF</span><span>DOCX</span><span>XLSX</span><span>PPTX</span><span>ODT</span><span>MP4</span><span>MOV</span><span>MP3</span><span>TXT</span><span>ZIP</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="outbar">
+        <span class="muted" data-i18n="saveTo"></span>
+        <span id="outdir-label" class="outdir"></span>
+        <button id="outdir-change" class="btn small" data-i18n="change"></button>
+        <button id="outdir-reset" class="btn small ghost" hidden data-i18n="nextToOriginal"></button>
+      </div>
+
+      <div id="list-wrap" hidden>
+        <div class="list-head">
+          <span id="summary"></span>
+          <button id="clear-list" class="btn small ghost" data-i18n="clearList"></button>
+        </div>
+        <ul id="list" class="list"></ul>
+      </div>
+    </section>
+
+    <!-- Linkler -->
+    <section id="tab-links" class="panel" hidden>
+      <div class="card watch">
+        <div>
+          <strong data-i18n="watchTitle"></strong>
+          <p class="muted" data-i18n="watchDesc"></p>
+        </div>
+        <label class="switch"><input type="checkbox" id="watch" /><span></span></label>
+      </div>
+
+      <div class="card">
+        <div class="row between">
+          <label for="link-in"><strong data-i18n="linkOrText"></strong></label>
+          <button id="paste-clean" class="btn small primary" data-i18n="pasteClean"></button>
+        </div>
+        <textarea id="link-in" rows="4" data-i18n-placeholder="linkPlaceholder"></textarea>
+        <div class="row between">
+          <strong data-i18n="cleanVersion"></strong>
+          <button id="copy-out" class="btn small" disabled data-i18n="copy"></button>
+        </div>
+        <output id="link-out" class="out"></output>
+        <div id="link-details"></div>
+      </div>
+
+      <div id="history-wrap" class="card" hidden>
+        <strong data-i18n="historyTitle"></strong>
+        <ul id="history" class="history"></ul>
+      </div>
+    </section>
+
+    <!-- Ayarlar -->
+    <section id="tab-settings" class="panel" hidden>
+      <div class="card">
+        <h2 data-i18n="cleaningTitle"></h2>
+        <label class="opt"><span><strong data-i18n="randomName"></strong><small data-i18n="randomNameDesc"></small></span><span class="switch"><input type="checkbox" data-setting="randomName" /><span></span></span></label>
+        <label class="opt"><span><strong data-i18n="keepOrientation"></strong><small data-i18n="keepOrientationDesc"></small></span><span class="switch"><input type="checkbox" data-setting="keepOrientation" /><span></span></span></label>
+        <label class="opt"><span><strong data-i18n="keepColor"></strong><small data-i18n="keepColorDesc"></small></span><span class="switch"><input type="checkbox" data-setting="keepColorProfile" /><span></span></span></label>
+        <label class="opt"><span><strong data-i18n="strict"></strong><small data-i18n="strictDesc"></small></span><span class="switch"><input type="checkbox" data-setting="strict" /><span></span></span></label>
+      </div>
+      <div class="card">
+        <h2 data-i18n="contextTitle"></h2>
+        <label class="opt"><span><strong id="cm-title" data-i18n="contextToggle"></strong><small id="cm-hint"></small></span><span class="switch"><input type="checkbox" id="contextmenu" /><span></span></span></label>
+      </div>
+      <div class="card">
+        <h2 data-i18n="languageTitle"></h2>
+        <select id="lang" class="select">
+          <option value="auto" data-i18n="languageAuto"></option>
+          <option value="tr">Türkçe</option>
+          <option value="en">English</option>
+        </select>
+      </div>
+      <div class="card offline">
+        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M12 3 4 6v6c0 4.5 3.4 8.3 8 9 4.6-.7 8-4.5 8-9V6l-8-3Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="m8.5 12 2.5 2.5 4.5-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <p data-i18n-html="offline"></p>
+      </div>
+    </section>
+  </main>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <script src="i18n.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
