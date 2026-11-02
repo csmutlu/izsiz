@@ -28,7 +28,14 @@ const outDir = () => {
   return d;
 };
 const settingsFile = () => new File(Paths.document, 'izsiz-ayarlar.json');
-const nameFromUri = (uri) => decodeURIComponent(uri.split('?')[0].split('/').pop() || 'file');
+// Galeri bazen tam yolu kodlanmış tek parça olarak verir (content://…/%2Fstorage%2F…%2Ffoto.jpg)
+const baseName = (s) => String(s || '').split(/[\\/]/).pop() || 'file';
+const nameFromUri = (uri) => {
+  let s = uri.split('?')[0];
+  try { s = decodeURIComponent(s); } catch { /* olduğu gibi kullan */ }
+  return baseName(s);
+};
+const EXT = { jpeg: 'jpg', png: 'png', webp: 'webp', gif: 'gif', svg: 'svg', heif: 'heic', pdf: 'pdf', mp4: 'mp4', mp3: 'mp3', text: 'txt', zip: 'zip' };
 const langOf = (settings) => (settings.lang === 'tr' || settings.lang === 'en' ? settings.lang : systemLanguage());
 const translator = (lang) => (key, ...args) => {
   const v = STRINGS[lang][key];
@@ -51,11 +58,13 @@ async function processAsset(asset, settings) {
   const size = asset.size ?? src.size ?? 0;
   if (size > MAX_SIZE) return { ok: false, error: t('tooBig') };
   const bytes = await src.bytes();
-  const r = localizeResult(await cleanFile(bytes, asset.name, settings), lang);
+  let srcName = baseName(asset.name);
+  const r = localizeResult(await cleanFile(bytes, srcName, settings), lang);
   if (!r.ok) return r;
+  if (!srcName.includes('.') && EXT[r.type]) srcName += `.${EXT[r.type]}`;
 
   let data = r.data;
-  let name = cleanName(asset.name, { random: settings.randomName, suffix: CLEAN_SUFFIX[lang] });
+  let name = cleanName(srcName, { random: settings.randomName, suffix: CLEAN_SUFFIX[lang] });
   let removed = r.removed;
 
   if (settings.strict && REENCODE[r.type]) {
